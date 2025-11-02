@@ -1,6 +1,34 @@
-# ePlateReader - Kullanım Kılavuzu
+# ePlateReader - Türk Plaka Tanıma Sistemi
+
+**Qwen3-VL** tabanlı akıllı plaka tanıma ve görsel analiz sistemi.
+
+## 🎨 Kullanım Yöntemleri
+
+1. **🖥️ Gradio UI** - Web arayüzü (Önerilen)
+2. **💻 CLI** - Komut satırı
+3. **🔌 API** - REST API
 
 ## 🚀 Hızlı Başlangıç
+
+### Yöntem 1: Gradio UI (Önerilen)
+
+```bash
+# 1. Servisi başlat
+python run_service.py
+
+# 2. Gradio UI'yi başlat (başka terminalde)
+python run_gradio.py
+
+# 3. Tarayıcıda aç: http://localhost:7860
+```
+
+**Özellikler:**
+- 🚗 Plaka tanıma (görsel → tespit → kırpma → deskew → OCR)
+- 💬 Genel LLM sorgusu (görsel + prompt → yanıt)
+- 📊 Görsel sonuç gösterimi
+- 🎯 Kullanıcı dostu arayüz
+
+### Yöntem 2: CLI
 
 ### 1. Servisi Başlat (Bir Kez)
 
@@ -198,6 +226,10 @@ pkill -f run_service.py
 ## 🧪 Test
 
 ```bash
+# Gradio UI testi
+python run_gradio.py
+# Tarayıcıda: http://localhost:7860
+
 # Servis testi
 python test_service.py testImages/1.png
 
@@ -207,12 +239,28 @@ python main.py testImages/1.png --debug
 
 ## 📚 Daha Fazla Bilgi
 
-- API Dokümantasyonu: http://localhost:8000/docs
-- Servis Detayları: [SERVICE_README.md](SERVICE_README.md)
-- Proje Ana Sayfası: [README.md](README.md)
+- **Gradio UI Kılavuzu:** [GRADIO_GUIDE.md](GRADIO_GUIDE.md)
+- **API Dokümantasyonu:** http://localhost:8000/docs
+- **Kullanım Detayları:** [USAGE.md](USAGE.md)
 
 ## 🎯 Özet
 
-1. **Bir kez başlat:** `python run_service.py`
-2. **İstediğin kadar kullan:** `python main.py <image>`
+### Gradio UI ile:
+1. **Servisi başlat:** `python run_service.py`
+2. **UI'yi başlat:** `python run_gradio.py`
+3. **Tarayıcıda kullan:** http://localhost:7860
+
+### CLI ile:
+1. **Servisi başlat:** `python run_service.py`
+2. **Plaka tanı:** `python main.py <image>`
 3. **Model bellekte kalır** - Her seferinde yeniden yüklenmez!
+
+### API ile:
+```python
+import requests, base64
+with open("plate.jpg", "rb") as f:
+    img_b64 = base64.b64encode(f.read()).decode('utf-8')
+response = requests.post("http://localhost:8000/api/v1/recognize/plate", 
+                        json={"image_base64": img_b64})
+print(response.json()["plate_text"])
+```

@@ -15,6 +15,10 @@ pydantic-settings>=2.0.0
 python-multipart>=0.0.6
 requests>=2.31.0
 
+# UI Dependencies
+gradio>=4.0.0
+Pillow>=10.0.0
+
 # Optional: Development Tools
 # pytest>=7.4.0
 # pytest-cov>=4.1.0
